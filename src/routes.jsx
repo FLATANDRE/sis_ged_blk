@@ -28,7 +28,8 @@ export const routes = [
         name: "profile",
         path: "/profile",
         element: <Profile />,
-      },
+      }
+      /*,
       {
         icon: <TableCellsIcon {...icon} />,
         name: "tables",
@@ -40,7 +41,7 @@ export const routes = [
         name: "notifactions",
         path: "/notifactions",
         element: <Notifications />,
-      },
+      },*/
     ],
   },
   {
