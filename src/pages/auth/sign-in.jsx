@@ -9,8 +9,21 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
+import {connectWallet} from "./authWallet";
+import { useNavigate } from "react-router-dom";
+
+
+
+
 
 export function SignIn() {
+  const navigate = useNavigate();
+  
+  const login = async () => {  
+    const isLoged = await connectWallet();  
+    if (isLoged) navigate("/dashboard/home");
+  }
+
   return (
     <>
       <img
@@ -26,21 +39,22 @@ export function SignIn() {
             className="mb-4 grid h-28 place-items-center"
           >
             <Typography variant="h3" color="white">
-              Sign In
+              Acessar o Sis GED
             </Typography>
           </CardHeader>
           <CardBody className="flex flex-col gap-4">
             <Input type="email" label="Email" size="lg" />
             <Input type="password" label="Password" size="lg" />
             <div className="-ml-2.5">
-              <Checkbox label="Remember Me" />
+              <Checkbox label="Lembrar meu login" />
             </div>
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" fullWidth>
-              Sign In
+            <Button variant="gradient" onClick={login}  fullWidth>
+              Entrar
             </Button>
-            <Typography variant="small" className="mt-6 flex justify-center">
+            
+            {/*<Typography variant="small" className="mt-6 flex justify-center">
               Don't have an account?
               <Link to="/auth/sign-up">
                 <Typography
@@ -52,7 +66,9 @@ export function SignIn() {
                   Sign up
                 </Typography>
               </Link>
-            </Typography>
+            </Typography>*/}
+
+            
           </CardFooter>
         </Card>
       </div>
