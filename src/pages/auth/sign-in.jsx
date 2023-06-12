@@ -12,10 +12,6 @@ import {
 import {connectWallet} from "./authWallet";
 import { useNavigate } from "react-router-dom";
 
-
-
-
-
 export function SignIn() {
   const navigate = useNavigate();
   

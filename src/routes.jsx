@@ -54,12 +54,12 @@ export const routes = [
         path: "/sign-in",
         element: <SignIn />,
       },
-      /*{
+      {
         icon: <UserPlusIcon {...icon} />,
         name: "sign up",
         path: "/sign-up",
         element: <SignUp />,
-      },*/
+      },
     ],
   },
 ];
