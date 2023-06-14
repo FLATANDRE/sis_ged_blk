@@ -26,12 +26,20 @@ import {
   setOpenSidenav,
 } from "@/context";
 import App from "@/App";
+import { useEffect, useState } from "react";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  const [linkPath, setLinkPath] = useState('');
+  const [buttonTxt, setButtonTxt] = useState('');
+
+  useEffect(() => {
+    setButtonTxt(!App.accounts ? 'Sign In' : 'Profile' );
+    setLinkPath(!App.accounts ? "/auth/sign-in" : "/dashboard/profile");
+  }, []);
 
   return (
     <Navbar
@@ -85,15 +93,14 @@ export function DashboardNavbar() {
             <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
           </IconButton>
           
-          {!App.accounts ?
-          <Link to="/auth/sign-in">
+          <Link to={linkPath}>
             <Button
               variant="text"
               color="blue-gray"
               className="hidden items-center gap-1 px-4 xl:flex"
             >
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-              Sign In
+              {buttonTxt}
             </Button>
             <IconButton
               variant="text"
@@ -103,26 +110,7 @@ export function DashboardNavbar() {
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
             </IconButton>
           </Link>
-         :
-          <Link to="/dashboard/profile">
-              <Button
-                variant="text"
-                color="blue-gray"
-                className="hidden items-center gap-1 px-4 xl:flex"
-              >
-                <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-                Profile
-              </Button>
-              <IconButton
-                variant="text"
-                color="blue-gray"
-                className="grid xl:hidden"
-              >
-                <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-              </IconButton>
-            </Link>   
-          }
-
+         
           <IconButton
             variant="text"
             color="blue-gray"
