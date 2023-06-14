@@ -5,9 +5,11 @@ import {
   BellIcon,
   ArrowRightOnRectangleIcon,
   UserPlusIcon,
+  DocumentIcon
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
+import { DocumentHome } from "@/pages/document";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -28,7 +30,7 @@ export const routes = [
         name: "profile",
         path: "/profile",
         element: <Profile />,
-      }
+      },
       /*,
       {
         icon: <TableCellsIcon {...icon} />,
@@ -44,6 +46,18 @@ export const routes = [
       },*/
     ],
   },
+  {
+    title: "document management",
+    layout: "document",
+    pages: [
+      {
+        icon: <DocumentIcon {...icon} />,
+        name: "document",
+        path: "/documentManagement",
+        element: <DocumentHome />,
+      }
+    ],
+  },      
   {
     title: "auth pages",
     layout: "auth",

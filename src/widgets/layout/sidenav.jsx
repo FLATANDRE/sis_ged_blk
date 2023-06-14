@@ -19,8 +19,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
   };
 
   var routesLinks = [...routes];
-  delete routesLinks[1];
-
+  
   return (
     <aside
       className={`${sidenavTypes[sidenavType]} ${
@@ -53,7 +52,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
         </IconButton>
       </div>
       <div className="m-4">
-        {routesLinks.map(({ layout, title, pages }, key) => (
+        {routesLinks.filter(({title}) => title != "auth pages" ).map(({ layout, title, pages }, key) => (
           <ul key={key} className="mb-4 flex flex-col gap-1">
             {title && (
               <li className="mx-3.5 mt-4 mb-2">

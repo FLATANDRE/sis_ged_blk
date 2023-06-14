@@ -3,7 +3,7 @@ import DocumentManagemet from "./DocumentManagement.json";
 import App from "../App";
 
 export const configureContractDocumentManagementInstance = () => {
-    const web3 = App.web3;
+    if(!App.web3) {console.error("App web3 not configured properly"); return;}
     App.contracts.DocumentManagement = contract(DocumentManagemet);
     App.contracts.DocumentManagement.setProvider(App.web3);    
 }
