@@ -47,12 +47,12 @@ export const routes = [
     ],
   },
   {
-    title: "document management",
+    title: "Gerenciamento De Arquivos",
     layout: "document",
     pages: [
       {
         icon: <DocumentIcon {...icon} />,
-        name: "document",
+        name: "documentos",
         path: "/documentManagement",
         element: <DocumentHome />,
       }
