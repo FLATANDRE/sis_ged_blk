@@ -22,12 +22,12 @@ export function DocumentHome() {
 
   useEffect(() => {
     async function getFiles() {
+      isFilesRefLoaded = true;
       const ipfs = getAppIpfsInstance();      
       var files = [];
-      for await (const ref of ipfs.files.ls(import.meta.env.IPFS_FILE_SYSTEM_DEFAULT_PATH)) {
+      for await (const ref of ipfs.files.ls(import.meta.env.VITE_IPFS_FILE_SYSTEM_DEFAULT_PATH)) {
         files.push(ref);                  
-      }
-      isFilesRefLoaded = true;
+      }      
       setFilesRef(files);
     }
 

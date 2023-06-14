@@ -25,6 +25,7 @@ import {
   setOpenConfigurator,
   setOpenSidenav,
 } from "@/context";
+import App from "@/App";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
@@ -83,6 +84,8 @@ export function DashboardNavbar() {
           >
             <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
           </IconButton>
+          
+          {!App.accounts ?
           <Link to="/auth/sign-in">
             <Button
               variant="text"
@@ -100,6 +103,26 @@ export function DashboardNavbar() {
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
             </IconButton>
           </Link>
+         :
+          <Link to="/dashboard/profile">
+              <Button
+                variant="text"
+                color="blue-gray"
+                className="hidden items-center gap-1 px-4 xl:flex"
+              >
+                <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
+                Profile
+              </Button>
+              <IconButton
+                variant="text"
+                color="blue-gray"
+                className="grid xl:hidden"
+              >
+                <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
+              </IconButton>
+            </Link>   
+          }
+
           <IconButton
             variant="text"
             color="blue-gray"
