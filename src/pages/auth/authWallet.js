@@ -17,7 +17,7 @@ export async function connectWallet() {
     App.accounts = accounts;
     App.web3 = web3;
     App.contracts = {};
-
+    
     console.log('Loged on wallet: ' + accounts);
     configureContractDocumentManagementInstance();
     return true;

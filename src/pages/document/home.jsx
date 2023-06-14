@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import {
   Typography,
   Card,
@@ -9,21 +9,33 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
-  Avatar,
-  Tooltip,
-  Progress,
 } from "@material-tailwind/react";
 import {
   CheckIcon,
   EllipsisVerticalIcon,
-  ArrowUpIcon,
 } from "@heroicons/react/24/outline";
-import {  
-  projectsTableData,
-  ordersOverviewData,
-} from "@/data";
+import {getAppIpfsInstance} from "@/ipfs_mgmt/ipfs";
 
-export function DocumentHome() {
+export function DocumentHome() {  
+  const [filesRef, setFilesRef] = useState([]);
+  var isFilesRefLoaded = false;
+
+  useEffect(() => {
+    async function getFiles() {
+      const ipfs = getAppIpfsInstance();      
+      var files = [];
+      for await (const ref of ipfs.files.ls(import.meta.env.IPFS_FILE_SYSTEM_DEFAULT_PATH)) {
+        files.push(ref);                  
+      }
+      isFilesRefLoaded = true;
+      setFilesRef(files);
+    }
+
+    if(!isFilesRefLoaded) {
+      getFiles();
+    }
+  }, []);
+
   return (
     <div className="mt-12">   
       <div className="mb-4 grid grid-cols-1 gap-6 xl:grid-cols-3">
@@ -43,7 +55,7 @@ export function DocumentHome() {
                 className="flex items-center gap-1 font-normal text-blue-gray-600"
               >
                 <CheckIcon strokeWidth={3} className="h-4 w-4 text-blue-500" />
-                <strong>30 done</strong> this month
+                <strong>{filesRef.length} Arquivo(s)</strong> no repositório 
               </Typography>
             </div>
             <Menu placement="left-start">
@@ -65,7 +77,7 @@ export function DocumentHome() {
             <table className="w-full min-w-[640px] table-auto">
               <thead>
                 <tr>
-                  {["ID","Nome do arquivo", "Data"].map(
+                  {["CID","Nome do arquivo", "Tamanho"].map(
                     (el) => (
                       <th
                         key={el}
@@ -82,72 +94,43 @@ export function DocumentHome() {
                   )}
                 </tr>
               </thead>
-              <tbody>
-                {projectsTableData.map(
-                  ({ img, name, members, budget, completion }, key) => {
+              <tbody>                
+               {filesRef.map(
+                  ({name,cid,size},index) => {
                     const className = `py-3 px-5 ${
-                      key === projectsTableData.length - 1
+                      index === filesRef.length - 1
                         ? ""
                         : "border-b border-blue-gray-50"
                     }`;
 
                     return (
-                      <tr key={name}>
-                        <td className={className}>
-                          <div className="flex items-center gap-4">
-                            <Avatar src={img} alt={name} size="sm" />
-                            <Typography
+                      <tr key={index}>
+                        <td className={className} title={cid.toString()}>
+                          <Typography
                               variant="small"
                               color="blue-gray"
                               className="font-bold"
                             >
-                              {name}
-                            </Typography>
-                          </div>
+                              {cid.toString().substring(0, 10)}...
+                          </Typography>
                         </td>
+
                         <td className={className}>
-                          {members.map(({ img, name }, key) => (
-                            <Tooltip key={name} content={name}>
-                              <Avatar
-                                src={img}
-                                alt={name}
-                                size="xs"
-                                variant="circular"
-                                className={`cursor-pointer border-2 border-white ${
-                                  key === 0 ? "" : "-ml-2.5"
-                                }`}
-                              />
-                            </Tooltip>
-                          ))}
+                          {name}                          
                         </td>
+
                         <td className={className}>
                           <Typography
                             variant="small"
                             className="text-xs font-medium text-blue-gray-600"
                           >
-                            {budget}
+                            {size} bytes
                           </Typography>
-                        </td>
-                        <td className={className}>
-                          <div className="w-10/12">
-                            <Typography
-                              variant="small"
-                              className="mb-1 block text-xs font-medium text-blue-gray-600"
-                            >
-                              {completion}%
-                            </Typography>
-                            <Progress
-                              value={completion}
-                              variant="gradient"
-                              color={completion === 100 ? "green" : "blue"}
-                              className="h-1"
-                            />
-                          </div>
                         </td>
                       </tr>
                     );
                   }
-                )}
+                )}         
               </tbody>
             </table>
           </CardBody>
