@@ -15,20 +15,20 @@ import {
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/outline";
 import {getAppIpfsInstance} from "@/ipfs_mgmt/ipfs";
+import apiDocMetadata from "@/api_sis_ged/api_doc_metadata/metadata";
 
 export function DocumentHome() {  
   const [filesRef, setFilesRef] = useState([]);
+  const userId = 123;
   var isFilesRefLoaded = false;
 
   useEffect(() => {
     async function getFiles() {
       isFilesRefLoaded = true;
-      const ipfs = getAppIpfsInstance();      
-      var files = [];
-      for await (const ref of ipfs.files.ls(import.meta.env.VITE_IPFS_FILE_SYSTEM_DEFAULT_PATH)) {
-        files.push(ref);                  
-      }      
-      setFilesRef(files);
+      apiDocMetadata
+      .get(`/documentMetadata/user/${userId}/documents`)
+      .then((response) => setFilesRef(response.data))
+      .catch((err) => console.error(err));
     }
 
     if(!isFilesRefLoaded) {
@@ -77,7 +77,7 @@ export function DocumentHome() {
             <table className="w-full min-w-[640px] table-auto">
               <thead>
                 <tr>
-                  {["CID","Nome do arquivo", "Tamanho"].map(
+                  {["CID","Nome do arquivo", "Data", "Versão"].map(
                     (el) => (
                       <th
                         key={el}
@@ -96,7 +96,7 @@ export function DocumentHome() {
               </thead>
               <tbody>                
                {filesRef.map(
-                  ({name,cid,size},index) => {
+                  ({docName,docCID,date,version},index) => {
                     const className = `py-3 px-5 ${
                       index === filesRef.length - 1
                         ? ""
@@ -105,18 +105,18 @@ export function DocumentHome() {
 
                     return (
                       <tr key={index}>
-                        <td className={className} title={cid.toString()}>
+                        <td className={className} title={docCID.toString()}>
                           <Typography
                               variant="small"
                               color="blue-gray"
                               className="font-bold"
                             >
-                              {cid.toString().substring(0, 10)}...
+                              {docCID.toString().substring(0, 10)}...
                           </Typography>
                         </td>
 
                         <td className={className}>
-                          {name}                          
+                          {docName}                          
                         </td>
 
                         <td className={className}>
@@ -124,7 +124,16 @@ export function DocumentHome() {
                             variant="small"
                             className="text-xs font-medium text-blue-gray-600"
                           >
-                            {size} bytes
+                            {date} 
+                          </Typography>
+                        </td>
+
+                        <td className={className}>
+                          <Typography
+                            variant="small"
+                            className="text-xs font-medium text-blue-gray-600"
+                          >
+                            {version} 
                           </Typography>
                         </td>
                       </tr>

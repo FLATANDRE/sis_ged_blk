@@ -11,9 +11,11 @@
   "dependencies": {
     "@heroicons/react": "2.0.12",
     "@material-tailwind/react": "1.2.4",
+    "@nftstorage/ipfs-cluster": "^5.0.1",
     "@truffle/contract": "^4.6.23",
     "@truffle/hdwallet-provider": "^2.1.12",
     "apexcharts": "3.35.5",
+    "axios": "^1.4.0",
     "browserify-zlib": "^0.2.0",
     "events": "^3.3.0",
     "ipfs-http-client": "^60.0.1",

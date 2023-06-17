@@ -18,7 +18,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
     transparent: "bg-transparent",
   };
 
-  var routesLinks = [...routes];
+  const routesLinks = routes.filter(({layout}) => layout != "auth");
   
   return (
     <aside
@@ -52,7 +52,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
         </IconButton>
       </div>
       <div className="m-4">
-        {routesLinks.filter(({title}) => title != "auth pages" ).map(({ layout, title, pages }, key) => (
+        {routesLinks.map(({ layout, title, pages }, key) => (
           <ul key={key} className="mb-4 flex flex-col gap-1">
             {title && (
               <li className="mx-3.5 mt-4 mb-2">
@@ -65,7 +65,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                 </Typography>
               </li>
             )}
-            {pages.map(({ icon, name, path }) => (
+            {pages.filter(({name}) => name != "profile").map(({ icon, name, path }) => (
               <li key={name}>
                 <NavLink to={`/${layout}${path}`}>
                   {({ isActive }) => (
