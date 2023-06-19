@@ -1,10 +1,10 @@
 import { useState } from "react";
 import formDocument from './document_form';
-import crypto from 'crypto';
 import hashFile from "./document_hash";
+import { getEthAccounts } from "../auth/authWallet";
 
 export function DocumentRegister() {  
-    const accounts = JSON.parse(localStorage.getItem('eth.accounts'));
+    const accounts = getEthAccounts();
     const [docInfo,setDocInfo] = useState('');
     const [docName,setDocName] = useState('');
     const docCID = '';
