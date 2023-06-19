@@ -1,6 +1,5 @@
 import Web3 from "web3";
 import {configureContractDocumentManagementInstance} from "../../contract_api/contract";
-import App from "../../App";
 
 export async function connectWallet() {
     if(!window.ethereum) {
@@ -14,9 +13,8 @@ export async function connectWallet() {
         console.log('Wallet not found/allowed!');
         return false;
     }
-    App.accounts = accounts;
-    App.web3 = web3;
-    App.contracts = {};
+    localStorage.setItem("eth.accounts", JSON.stringify(accounts));
+    localStorage.setItem("contracts", JSON.stringify({}));
     
     console.log('Loged on wallet: ' + accounts);
     configureContractDocumentManagementInstance();

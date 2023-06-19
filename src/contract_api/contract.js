@@ -1,14 +1,19 @@
+import Web3 from "web3";
 import contract from "@truffle/contract";
-import DocumentManagemet from "./DocumentManagement.json";
-import App from "../App";
+import DocumentManagement from "./DocumentManagement.json";
 
 export const configureContractDocumentManagementInstance = () => {
-    if(!App.web3) {console.error("App web3 not configured properly"); return;}
-    App.contracts.DocumentManagement = contract(DocumentManagemet);
-    App.contracts.DocumentManagement.setProvider(App.web3);    
+    const web3 = new Web3(window.ethereum);
+    if(!web3) {console.error("App web3 not configured properly"); return;}
+
+    const contracts = JSON.parse(localStorage.getItem("contracts"));
+    contracts.DocumentManagement = contract(DocumentManagement);
+    contracts.DocumentManagement.setProvider(web3);    
+    localStorage.setItem("contracts",JSON.stringify(contracts));
 }
 
 export const getContractDocumentManagementInstance = () => {
-    if(!App.contracts.DocumentManagement) configureContractInstance();
-    return App.contracts.DocumentManagement.deployed();
+    const contracts = JSON.parse(localStorage.getItem("contracts"));
+    if(!contracts.DocumentManagement) configureContractDocumentManagementInstance();
+    return contracts.DocumentManagement.deployed();
 }

@@ -14,21 +14,21 @@ import {
   CheckIcon,
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/outline";
-import {getAppIpfsInstance} from "@/ipfs_mgmt/ipfs";
 import apiDocMetadata from "@/api_sis_ged/api_doc_metadata/metadata";
 
 export function DocumentHome() {  
   const [filesRef, setFilesRef] = useState([]);
-  const userId = 123;
+  const accounts = JSON.parse(localStorage.getItem('eth.accounts'));
+  const userId =  accounts[0];
   var isFilesRefLoaded = false;
 
   useEffect(() => {
     async function getFiles() {
       isFilesRefLoaded = true;
       apiDocMetadata
-      .get(`/documentMetadata/user/${userId}/documents`)
-      .then((response) => setFilesRef(response.data))
-      .catch((err) => console.error(err));
+        .get(`/documentMetadata/user/${userId}/documents`)
+        .then((response) => setFilesRef(response.data))
+        .catch((err) => console.error(err));
     }
 
     if(!isFilesRefLoaded) {
@@ -77,7 +77,7 @@ export function DocumentHome() {
             <table className="w-full min-w-[640px] table-auto">
               <thead>
                 <tr>
-                  {["CID","Nome do arquivo", "Data", "Versão"].map(
+                  {["CID","Nome do arquivo", "Data", "Info. do documento", "Versão"].map(
                     (el) => (
                       <th
                         key={el}
@@ -96,7 +96,7 @@ export function DocumentHome() {
               </thead>
               <tbody>                
                {filesRef.map(
-                  ({docName,docCID,date,version},index) => {
+                  ({docName,docCID,docInfo,date,version},index) => {
                     const className = `py-3 px-5 ${
                       index === filesRef.length - 1
                         ? ""
@@ -125,6 +125,15 @@ export function DocumentHome() {
                             className="text-xs font-medium text-blue-gray-600"
                           >
                             {date} 
+                          </Typography>
+                        </td>
+
+                        <td className={className}>
+                          <Typography
+                            variant="small"
+                            className="text-xs font-medium text-blue-gray-600"
+                          >
+                            {docInfo} 
                           </Typography>
                         </td>
 

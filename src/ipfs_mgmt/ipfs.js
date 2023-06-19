@@ -1,10 +1,10 @@
 import {create} from "ipfs-http-client";
-import App from "../App";
 
 export const getAppIpfsInstance = () => {
-    if (!App.ipfs) {
-        const ipfs = create(import.meta.env.VITE_IPFS_SERVER_API);
-        App.ipfs = ipfs;
+    var ipfs = JSON.parse(localStorage.getItem("ipfs"));
+    if (!ipfs) {
+        ipfs = create(import.meta.env.VITE_IPFS_SERVER_API)
+        localStorage.setItem("ipfs", JSON.stringify(ipfs));
     }
-    return App.ipfs;
+    return ipfs;
 }
