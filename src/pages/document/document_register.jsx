@@ -1,12 +1,10 @@
 import { useState } from "react";
 import formDocument from './document_form';
-import crypto from 'crypto';
 import hashFile from "./document_hash";
 
 export function DocumentRegister() {  
     const accounts = JSON.parse(localStorage.getItem('eth.accounts'));
     const [docInfo,setDocInfo] = useState('');
-    const [docName,setDocName] = useState('');
     const docCID = '';
     const [fileUpload,setFile] = useState(null);
 
