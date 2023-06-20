@@ -25,8 +25,8 @@ import {
   setOpenConfigurator,
   setOpenSidenav,
 } from "@/context";
-import App from "@/App";
 import { useEffect, useState } from "react";
+import { getContracts } from "@/pages/auth/authWallet";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
@@ -36,9 +36,11 @@ export function DashboardNavbar() {
   const [linkPath, setLinkPath] = useState('');
   const [buttonTxt, setButtonTxt] = useState('');
 
+  const accounts = getContracts();
+
   useEffect(() => {
-    setButtonTxt(!App.accounts ? 'Sign In' : 'Profile' );
-    setLinkPath(!App.accounts ? "/auth/sign-in" : "/dashboard/profile");
+    setButtonTxt(!accounts ? 'Sign In' : 'Profile' );
+    setLinkPath(!accounts ? "/auth/sign-in" : "/dashboard/profile");
   }, []);
 
   return (

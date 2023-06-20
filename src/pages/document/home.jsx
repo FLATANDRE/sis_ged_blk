@@ -15,10 +15,11 @@ import {
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/outline";
 import apiDocMetadata from "@/api_sis_ged/api_doc_metadata/metadata";
+import { getEthAccounts } from "../auth/authWallet";
 
 export function DocumentHome() {  
   const [filesRef, setFilesRef] = useState([]);
-  const accounts = JSON.parse(localStorage.getItem('eth.accounts'));
+  const accounts = getEthAccounts();
   const userId =  accounts[0];
   var isFilesRefLoaded = false;
 

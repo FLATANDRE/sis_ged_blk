@@ -21,3 +21,10 @@ export async function connectWallet() {
     return true;
 }
 
+export const getEthAccounts = () => {
+    return JSON.parse(localStorage.getItem("eth.accounts"));
+}
+
+export const getContracts = () => {
+    return JSON.parse(localStorage.getItem("contracts"));
+}
