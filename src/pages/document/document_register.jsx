@@ -2,11 +2,13 @@ import { useState } from "react";
 import formDocument from './document_form';
 import hashFile from "./document_hash";
 import { getEthAccounts } from "../auth/authWallet";
+import { getIpfsClusterInstance } from "@/ipfs_mgmt/ipfs";
+import apiDocMetadata from "@/api_sis_ged/api_doc_metadata/metadata";
+import { getContractDocumentManagementInstance } from "@/contract_api/contract";
 
 export function DocumentRegister() {  
     const accounts = getEthAccounts();
     const [docInfo,setDocInfo] = useState('');
-    const docCID = '';
     const [fileUpload,setFile] = useState(null);
 
     const onFileChange = (e) => {
@@ -28,12 +30,35 @@ export function DocumentRegister() {
         }
               
         //enviar documento para o IPFS
+        const ipfs = getIpfsClusterInstance();
+        const { cid } = await ipfs.add(fileUpload);
+        if (!cid) {
+            console.error('File upload to IPFS failed');
+            return;
+        } 
+        formDocument.docCID = cid;
        
-        //enviar as informações para o contrato
 
-        //enviar info para api metadata
+        //TODO adicionar mensagem para o usuario verificar a wallet e permitir transação
+        //TODO verificar se tem alguma forma de exibir a wallet para que o usuário permita a transação.
+
+
         
-        console.log(formDocument);
+        //enviar as informações para o contrato
+        const DocumentManagementContract = await getContractDocumentManagementInstance();
+        const isStored = await DocumentManagementContract.storeDocument(formDocument.docHash,formDocument.docName,{ from : accounts[0]});
+        
+
+        if (isStored) {
+            //enviar info para api metadata
+            const {data} = await apiDocMetadata.post('/documentMetadata',JSON.stringify(formDocument));
+            console.log(data);
+        } else {
+            console.error('Failed to store document');
+            return;
+        }
+
+        //TODO adicionar mensagem de sucesso após incluir arquivo
     }
 
     return (

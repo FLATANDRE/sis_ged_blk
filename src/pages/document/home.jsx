@@ -16,6 +16,7 @@ import {
 } from "@heroicons/react/24/outline";
 import apiDocMetadata from "@/api_sis_ged/api_doc_metadata/metadata";
 import { getEthAccounts } from "../auth/authWallet";
+import { downloadFileFromIpfs } from "@/ipfs_mgmt/downloadFile";
 
 export function DocumentHome() {  
   const [filesRef, setFilesRef] = useState([]);
@@ -117,7 +118,13 @@ export function DocumentHome() {
                         </td>
 
                         <td className={className}>
-                          {docName}                          
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal transition-all hover:text-blue-500 hover:opacity-100"
+                            >
+                              <a className="underline cursor-pointer" onClick={() => downloadFileFromIpfs(docCID)}>{docName}</a>  
+                            </Typography>                        
                         </td>
 
                         <td className={className}>

@@ -1,10 +1,7 @@
-import {create} from "ipfs-http-client";
+//import {create} from "ipfs-http-client";
+import { Cluster } from "@nftstorage/ipfs-cluster";
 
-export const getAppIpfsInstance = () => {
-    var ipfs = JSON.parse(localStorage.getItem("ipfs"));
-    if (!ipfs) {
-        ipfs = create(import.meta.env.VITE_IPFS_SERVER_API)
-        localStorage.setItem("ipfs", JSON.stringify(ipfs));
-    }
-    return ipfs;
+export const getIpfsClusterInstance = () => {
+        //return create(import.meta.env.VITE_IPFS_SERVER_API)
+        return new Cluster(import.meta.env.VITE_IPFS_CLUSTER);        
 }
