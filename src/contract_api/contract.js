@@ -1,4 +1,3 @@
-import Web3 from "web3";
 import contract from "@truffle/contract";
 import DocumentManagement from "./DocumentManagement.json";
 

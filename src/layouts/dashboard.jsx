@@ -51,6 +51,6 @@ export function Dashboard() {
   );
 }
 
-Dashboard.displayName = "/src/layout/dashboard.jsx";
+Dashboard.displayName = "/src/layouts/dashboard.jsx";
 
 export default Dashboard;

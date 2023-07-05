@@ -51,6 +51,6 @@ export function Document() {
   );
 }
 
-Document.displayName = "/src/layout/document.jsx";
+Document.displayName = "/src/layouts/document.jsx";
 
 export default Document;
