@@ -5,20 +5,42 @@ import {
   CardBody,
   CardFooter,
   Input,
-  Checkbox,
   Button,
   Typography,
 } from "@material-tailwind/react";
-import {connectWallet} from "./authWallet";
+import {connectWallet, getEthAccounts} from "./authWallet";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export function SignIn() {
+  const [account, setAccount] = useState([]);
   const navigate = useNavigate();
+  const isAccountLoaded = false;
+  const [isLoged, setIsLoged] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [showModal, setShowModal] = useState(false);
   
-  const login = async () => {  
-    const isLoged = await connectWallet();  
-    if (isLoged) navigate("/dashboard/home");
+  const getAccount = async () => {  
+    setIsLoged(await connectWallet());  
+    setAccount(getEthAccounts());
   }
+
+  const login = async () => {  
+    await connectWallet();
+    const accountCompare = getEthAccounts();
+    if (account[0] === accountCompare[0] && isLoged) {
+      navigate("/dashboard/home");
+    } else {
+      setModalMessage(`A conta de usuário ${account[0]} é  diferente da conta logada na Metamask ${accountCompare[0]}. Realize o refresh da página para atualizar a conta utilizada.`);
+      setShowModal(true);
+    }
+  }
+
+  useEffect(() => {
+    if(!isAccountLoaded) {
+      getAccount();
+    }
+  }, []);
 
   return (
     <>
@@ -38,36 +60,62 @@ export function SignIn() {
               Acessar o Sis GED
             </Typography>
           </CardHeader>
-          <CardBody className="flex flex-col gap-4">
-            <Input type="email" label="Email" size="lg" />
-            <Input type="password" label="Password" size="lg" />
-            <div className="-ml-2.5">
-              <Checkbox label="Lembrar meu login" />
-            </div>
+          <CardBody className="justify-center items-center flex flex-col gap-4">
+            <label for="userAccount" class="block text-sm font-medium leading-6 text-gray-900">Conta de usuário</label>                            
+            <p>{account.length > 0 ? account : "Realize o login em uma conta na Metamask"}</p>
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" onClick={login}  fullWidth>
+            <Button variant="gradient" onClick={login} disabled={!isLoged}  fullWidth>
               Entrar
-            </Button>
-            
-            {/*<Typography variant="small" className="mt-6 flex justify-center">
-              Don't have an account?
-              <Link to="/auth/sign-up">
-                <Typography
-                  as="span"
-                  variant="small"
-                  color="blue"
-                  className="ml-1 font-bold"
-                >
-                  Sign up
-                </Typography>
-              </Link>
-            </Typography>*/}
-
-            
+            </Button>              
           </CardFooter>
         </Card>
       </div>
+
+      {showModal ? (
+          <>
+          <div
+            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+          >
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              {/*content*/}
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                {/*header*/}
+                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                  <h3 className="text-3xl font-semibold">
+                    Sis GED com Blockchain
+                  </h3>
+                  <button
+                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    onClick={() => setShowModal(false)}
+                  >
+                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                      ×
+                    </span>
+                  </button>
+                </div>
+                {/*body*/}
+                <div className="relative p-6 flex-auto">
+                  <p className="my-4 text-slate-500 text-lg leading-relaxed">
+                    {modalMessage}
+                  </p>
+                </div>
+                {/*footer*/}
+                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                  <button
+                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Fechar
+                  </button>                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          </>
+      ) : null}
     </>
   );
 }

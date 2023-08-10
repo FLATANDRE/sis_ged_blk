@@ -76,11 +76,19 @@ export function DocumentRegister() {
         //TODO verificar se tem alguma forma de exibir a wallet para que o usuário permita a transação.
 
 
-
         //enviar as informações para o contrato
-        const DocumentManagementContract = await getContractDocumentManagementInstance();
-        const isStored = await DocumentManagementContract.storeDocument(formDocument.docHash,formDocument.docName,{ from : accounts[0]});
-        setLoadingPercentage('80%');
+        let isStored = false;
+        try {
+            const DocumentManagementContract = await getContractDocumentManagementInstance();
+            isStored = await DocumentManagementContract.storeDocument(formDocument.docHash,formDocument.docName,{ from : accounts[0]});
+            setLoadingPercentage('80%');
+        } catch (err) {
+            setModalMessage('Houve um erro ao confirmar a transação na blcockchain.');
+            setShowModal(true);
+            setShowLoading(false);
+            ipfs.unpin(cid);
+            return;
+        }
 
         if (isStored) {
             //enviar info para api metadata
@@ -93,7 +101,7 @@ export function DocumentRegister() {
         }
 
         setLoadingPercentage('100%');
-        setModalMessage(`O arquivo ${docName} foi salvo com sucesso. Na opção Documentos, uma listagem com os arquivos incluídos poderá ser visualizada.`);
+        setModalMessage(`O arquivo "${docName}" foi salvo com sucesso. Na opção Documentos, uma listagem com os arquivos incluídos poderá ser visualizada.`);
         setShowModal(true);
         setShowLoading(false);
         clearForm();       
@@ -221,7 +229,7 @@ export function DocumentRegister() {
                             type="button"
                             onClick={() => setShowModal(false)}
                         >
-                            Close
+                            Fechar
                         </button>                        
                         </div>
                     </div>

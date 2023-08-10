@@ -54,9 +54,10 @@ export function Navbar({ brandName, routes, action }) {
           </Typography>
         </Link>
         <div className="hidden lg:block">{navList}</div>
-        {React.cloneElement(action, {
+        {<div></div>
+        /*React.cloneElement(action, {
           className: "hidden lg:inline-block",
-        })}
+        })*/}
         <IconButton
           variant="text"
           size="sm"
@@ -70,14 +71,15 @@ export function Navbar({ brandName, routes, action }) {
           )}
         </IconButton>
       </div>
-      <MobileNav open={openNav}>
+      {<div></div>
+      /*<MobileNav open={openNav}>
         <div className="container mx-auto">
           {navList}
           {React.cloneElement(action, {
             className: "w-full block lg:hidden",
           })}
         </div>
-      </MobileNav>
+        </MobileNav>*/}
     </MTNavbar>
   );
 }

@@ -235,7 +235,7 @@ export function DocumentHome() {
                       type="button"
                       onClick={() => setShowModal(false)}
                   >
-                      Close
+                      Fechar
                   </button>                        
                   </div>
               </div>

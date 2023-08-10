@@ -7,17 +7,20 @@ export function Footer({ brandName, brandLink}) {
   const [showModal, setShowModal] = React.useState(false);
   const [modalTitle, setModalTitle] = React.useState('');
   const [modalText, setModalText] = React.useState('');
+  const [showImg, setShowImg] = React.useState(false);
 
   const about = () =>{
     setModalTitle('Sobre o sistema');
     setModalText('Sistema experimental para o projeto de TCC na pós-graduação em Arquitetura de Sistema Distribuídos. Desenvolvido por André Santana.');
     setShowModal(true);
+    setShowImg(true);
   }
 
   const license = () =>{
     setModalTitle('Licença');
     setModalText('Sistema desenvolvido sobre a licença de software livre GNU GPL.');
     setShowModal(true);
+    setShowImg(false);
   }
 
   return (
@@ -28,7 +31,7 @@ export function Footer({ brandName, brandLink}) {
           <div
             className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
           >
-            <div className="relative w-auto my-6 mx-auto max-w-sm">
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
@@ -48,8 +51,19 @@ export function Footer({ brandName, brandLink}) {
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
                   <p className="my-4 text-slate-500 text-lg leading-relaxed">
-                    {modalText}
+                    {modalText}                    
                   </p>
+                  {showImg ? 
+                    <>
+                      <div className="justify-center items-center flex">
+                        <img src={"../../../public/img/hyperledger_logo.png"} width={"100px"} height={"100px"}/>
+                        <img src={"../../../public/img/ipfs_logo.png"} width={"80px"} height={"80px"}/>
+                        <img src={"../../../public/img/spring_logo.png"} width={"100px"} height={"100px"}/>
+                        <img src={"../../../public/img/metamask_logo.png"} width={"100px"} height={"100px"}/>
+                        <img src={"../../../public/img/react_logo.jpg"} width={"100px"} height={"100px"}/>
+                      </div>
+                    </> 
+                    : null}
                 </div>
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
